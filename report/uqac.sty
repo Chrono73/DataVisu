@@ -1,0 +1,50 @@
+\ProvidesPackage{uqac}
+\RequirePackage{graphicx}
+
+\renewcommand*{\@author}{FIXME \texttt{\string\author} not set.}
+
+\newcommand*{\codep}[1]{\gdef\@codep{#1}}
+\renewcommand*{\@codep}{FIXME \texttt{\string\codep} not set.}
+
+\newcommand*{\discipline}[1]{\gdef\@discipline{#1}}
+\renewcommand*{\@discipline}{FIXME \texttt{\string\discipline} not set.}
+
+\newcommand*{\projet}[1]{\gdef\@projet{#1}}
+\renewcommand*{\@projet}{FIXME \texttt{\string\projet} not set.}
+
+\renewcommand*{\maketitle}{
+	\begin{titlepage}
+
+	    \raggedleft
+		\includegraphics[width=4cm]{LogoUQAC.png}
+		\vspace{-2cm}
+
+		\raggedright
+		{\@author\par}
+		{\@codep\par}
+
+		\vfill
+
+		\centering
+		{\LARGE Université du Québec à Chicoutimi}
+		\vspace{1cm}
+
+		\hrule
+
+		\vspace{1cm}
+		{\LARGE \bfseries\@discipline\par}
+		\vspace{1cm}
+
+		\hrule
+
+		\vspace{1cm}
+		{\LARGE \@projet\par}
+
+		\vfill
+
+		\raggedleft
+		{\@date\par}
+
+	\end{titlepage}
+}
+\endinput

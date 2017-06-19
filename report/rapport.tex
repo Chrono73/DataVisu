@@ -34,17 +34,60 @@ Ces articles avaient également comme problématique l'optimisation de dessin de
 
 Suite à l'étude de ces articles, nous allons premièrement implémenter les algorithmes résultant des travaux des auteurs de nos quatre articles de référence. C'est après cela que nous allons écrire de manière optimisée et implémenter notre solution algorithmique en \emph{Python}, en utilisant la bibliothèque \emph{Tulip}.
 
+Pour finir, nous allons étudier plus en détail nos algorithmes à l'aide de jeux de données, permettant de voir ainsi s'ils répondent bien à leur objectif, s'ils peuvent éventuellement être améliorés au niveau du temps d'exécution, de l'écriture du code, etc.
 
 
 \newpage
 \section{Étude préliminaire des articles}
-\subsection{subsection name}
-\subsubsection{subsubsection name}
+
+Ayant relevé une continuité Chronologique, dans la mesure où les auteurs reprennent les travaux des précédents articles. Notre étude des articles gardera cet ordre Chronologique.
+
+Avant d'entrer dans l'étude des algorithmes, il est important de définir les caractéristiques principales de ces graphes. Un arbre, tel que défini dans notre premier article \cite{artcile79}, est un graphe plan dans lequel aucune arrête ne se croise, chaque n\oe{}ud du graphe comprend un unique prédécesseur (à l'exception du n\oe{}ud racine: \emph{Root}), un n\oe{}ud en peut se trouver plus proche du \emph{Root} que ses n\oe{}uds parents, le dernier n\oe{}ud d'une branche (n\oe{}ud qui n'a pas de fils) est appellé feuille. La dernière caractéristique de base d'un arbre est l'alignement de ses n\oe{}uds, les n\oe{}uds d’une même hauteur doivent être sur la même ligne de sorte que toutes les hauteurs soient sur des lignes parallèles (cette dernière propriété est noté dans l'article \cite{article79}: \emph{Esthétique 1}).
+
+Maintenant que notre arbre de base est défini, nous pouvons nous intéresser aux problématiques des articles concernant l'implémentation d'algorithme (voir ci-dessous nos propriétés de bases appliquées à un arbre).
+
+\vfill
+\begin{figure}[h]
+		\begin{center}
+			\includegraphics[scale=0.4]{arbre.png}
+		\end{center}
+	\caption{Exemple d'un arbre d'après nos premières propriétés \cite{article79}}
+  \label{fig:arbre}
+\end{figure}
+\vfill
 
 \newpage
-\section{section3 name}
+  \subsection{\emph{Tidy Drawings of Trees}}
+
+  Les auteurs de l'article se sont penchés sur l'optimisation de dessin d'arbre. Dans un soucis d'espace sur lequel représenter les graphe, ils ont posé la problématique suivante (\emph{Limite Physique 1}):  la largeur de l’arbre doit être la plus petite possible (la hauteur est fixée par l’arbre). Pour rappel, la hauteur d'un n\oe{}ud correspond au nombre de branche entre lui et le \emph{Root} (cf: Figure \ref{fig:arbre} page \pageref{fig:arbre}).
+
+  Le premier algorithme (\emph{Algorithme 1}) de dessin d'arbre d'écrit par cet article est \emph{l'algorithme d'arbre naïf}. Il a comme objectif de repondre à la \emph{Limite Physique 1} en optimisant l'espace du graphe.
+
+  Il prend en entrée un arbre, tel que nous l'avons défini plus haut et retourne en sortie le même arbre dans lequel la position des n\oe{}ud à changer pour faire en sorte qu'il ai la largeur la plus étroite possible. 
+
+  \vfill
+  \begin{figure}[h]
+  		\begin{center}
+  			\includegraphics[scale=0.4]{arbreNaif.png}
+  		\end{center}
+  	\caption{Notre premier arbre modifié par l'\emph{Algorithme 1} \cite{article79}}
+    \label{fig:arbreNaif}
+  \end{figure}
+  \vfill
+
+  \subsection{\emph{Tidier Drawings of Trees}}
+  \subsection{\emph{A Node-Positioning Algorithm for General Trees}}
+  \subsection{\emph{Improving Walker’s Algorithm to Run in Linear Time}}
 
 
+\newpage
+\section{Implémentation des algorithmes}
+
+\newpage
+\section{Étude empirique des algorithmes}
+
+\newpage
+\section{Conclusion}
 
 
 
@@ -55,16 +98,16 @@ Suite à l'étude de ces articles, nous allons premièrement implémenter les al
 \begin{thebibliography}{10}
 
 \bibitem{article79}
-C. Wetherell and A. Shannon. Tidy Drawings of trees. \textit{IEEE transactions on Software Engineering} SE-5, 5 (septembre 1979) p514-520.
+C. Wetherell and A. Shannon. Tidy Drawings of Trees. \textit{IEEE transactions on Software Engineering} SE-5, 5 (septembre 1979) p514-520.
 
 \bibitem{article81}
-E. Reingold and J. Tilford. Tidier drawings of trees. \textit{IEEE Transactions on Software Engineering} SE-7, 2 (mars 1981) p223-228.
+E. Reingold and J. Tilford. Tidier Drawings of Trees. \textit{IEEE Transactions on Software Engineering} SE-7, 2 (mars 1981) p223-228.
 
 \bibitem{article90}
-J. Walker II. A node-positioning algorithm for general trees. \textit{Software – Practice and Experience} SE-20, 2 (1990) p685–705.
+J. Walker II. A Node-Positioning Algorithm for General Trees. \textit{Software – Practice and Experience} SE-20, 2 (1990) p685–705.
 
 \bibitem{article02}
-C. Buchheim, M. Jünger and S. Leipert. Improving Walker’s algorithm to run in linear time. Technical Report zaik2002-431, ZAIK, Universität zu Köln, (2002) p344-352.
+C. Buchheim, M. Jünger and S. Leipert. Improving Walker’s Algorithm to Run in Linear Time. Technical Report zaik2002-431, ZAIK, Universität zu Köln, (2002) p344-352.
 
 \end{thebibliography}
 

@@ -60,20 +60,22 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   \subsection{\emph{Tidy Drawings of Trees}}
 
   Les auteurs de l'article se sont penchés sur l'optimisation de dessin d'arbre. Dans un soucis d'espace sur lequel représenter les graphe, ils ont posé la problématique suivante (\emph{Limite Physique 1}):  la largeur de l’arbre doit être la plus petite possible (la hauteur est fixée par l’arbre). Pour rappel, la hauteur d'un n\oe{}ud correspond au nombre de branche entre lui et le \emph{Root} (cf: Figure \ref{fig:arbre} page \pageref{fig:arbre}).
+  \subsubsection{A Naive Tree Drawer}
 
-  Le premier algorithme (\emph{Algorithme 1}) de dessin d'arbre d'écrit par cet article est \emph{l'algorithme d'arbre naïf}. Il a comme objectif de repondre à la \emph{Limite Physique 1} en optimisant l'espace du graphe.
+    Le premier algorithme (\emph{Algorithme 1}) de dessin d'arbre décri par cet article est \emph{l'algorithme d'arbre naïf}. Il a comme objectif de repondre à la \emph{Limite Physique 1} en optimisant l'espace du graphe.
 
-  Il prend en entrée un arbre, tel que nous l'avons défini plus haut et retourne en sortie le même arbre dans lequel la position des n\oe{}ud à changer pour faire en sorte qu'il ai la largeur la plus étroite possible. 
+    Il prend en entrée un arbre, tel que nous l'avons défini plus haut, ainsi que la hauteur de cette arbre et retourne en sortie le même arbre dans lequel la position des n\oe{}uds a changée pour faire en sorte que l'arbre ai la largeur la plus étroite possible.
 
-  \vfill
-  \begin{figure}[h]
-  		\begin{center}
-  			\includegraphics[scale=0.4]{arbreNaif.png}
-  		\end{center}
-  	\caption{Notre premier arbre modifié par l'\emph{Algorithme 1} \cite{article79}}
-    \label{fig:arbreNaif}
-  \end{figure}
-  \vfill
+    Le fonctionnement de cet algorithme comprend une variable qui compte la prochaine coordonnée en $x$ de libre, pour y placer le prochain n\oe{}ud. Pour ce qui est de la coordonnée en $y$ elle correspond à la hauteur du n\oe{}ud dans l'arbre qui a été donnée en paramètre d'entrée de l'algorithme, de cette manière, on respecte toujours l'\emph{Esthétique 1}.
+
+    \begin{figure}[h]
+    		\begin{center}
+    			\includegraphics[scale=0.4]{arbreNaif.png}
+    		\end{center}
+    	\caption{Notre premier arbre modifié par l'\emph{Algorithme 1} \cite{article79}}
+      \label{fig:arbreNaif}
+    \end{figure}
+    \vfill
 
   \subsection{\emph{Tidier Drawings of Trees}}
   \subsection{\emph{A Node-Positioning Algorithm for General Trees}}

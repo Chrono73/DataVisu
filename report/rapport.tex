@@ -87,7 +87,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
     \vfill
     \begin{figure}[h]
     		\begin{center}
-    			\includegraphics[scale=0.4]{arbreBinaire.png}
+    			\includegraphics[scale=0.5]{arbreBinaire.png}
     		\end{center}
     	\caption{Arbre binaire dessiné par l'\emph{Algorithme de Knuth}. \cite{article79}}
       \label{fig:arbreBinaire}
@@ -98,6 +98,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 
     Il est alors nécessaire d'utiliser un algorithme différent pour que les conditions de l'\emph{Limite Physique} soient respectées.
 
+\newpage
     \subsubsection{Drawings Satisfying the Physical Limit}
 
     Nous avons vu que l'\emph{Algorithme 1} et l'\emph{Algorithme de Knuth} satisfaisaient chacun des contraintes \emph{Esthétique}. L'idée est ici de fusionner les deux algorithmes pour obtenir un algorithme qui respecte à la fois l'\emph{Esthétique 1}, l'\emph{Esthétique 2} et la \emph{Limite Physique}. L'\emph{Algorithme 3} qui résulte de cette fusion donne des meilleurs arbres que l'\emph{Algorithme 2}, mais ne respecte pas la \emph{Limite Physique} dans toutes les situations.
@@ -117,24 +118,53 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
     \end{figure}
     \vfill
 
-    \newpage
+
     L'arbre binaire que nous avons vu à la suite de l'\emph{algorithme de Knuth} est à présent optimal en largeur. Il restpect les contraintes de la \emph{Limite Physique}. Nous constatons que l'arbre qui est à droite, par contre, pourrait être plus optimisé. Il résulte de ce contre exemple que l'\emph{Algorithme 3} doit être modifié afin d'obtenir de meilleurs résultats.
 
     Face à ce problème, les auteurs de l'article \cite{article79} ont posé une nouvelle propriété \emph{Esthétique 3}: les parents doivent être centrés par rapport à leurs fils. Cela incluant leur fils directs, mais aussi les fils de leur fils.
 
-    Le but étant qu'une fois l'\emph{Algorithme 3} modifié, notre nouvel algorithme respectera donc l'\emph{Esthétique 1}, \emph{Esthétique 2}, \emph{Esthétique 3} et la \emph{Limite Physique}.
+    Le but étant qu'une fois l'\emph{Algorithme 3} modifié (que l'on va appeller \emph{Algorithme WS}), notre nouvel algorithme respectera donc l'\emph{Esthétique 1}, \emph{Esthétique 2}, \emph{Esthétique 3} et la \emph{Limite Physique}.
 
     \vfill
     \begin{figure}[h]
         \begin{center}
-      		\includegraphics[scale=0.5]{arbre3Modifie.png}
+      		\includegraphics[scale=0.5]{arbreWS.png}
         \end{center}
-    	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'utilisation de l'\emph{Algorithme 3 Modifié}. \cite{article79}}
-      \label{fig:arbresAlgo3Modifie}
+    	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'\emph{Algorithme WS}. \cite{article79}}
+      \label{fig:arbresAlgoWS}
     \end{figure}
     \vfill
 
+\newpage
   \subsection{\emph{Tidier Drawings of Trees}}
+
+  Cette article \cite{article81} reprend les travaux que nous venons de voir. Nous retrouvons donc les trois différentes \emph{Esthétiques} ainsi que la problématique commune de satisfaire à la fois les trois \emph{Esthétiques} et la \emph{Limite Physique}.
+
+  Les auteurs relèvent l'insufisance de l'\emph{Algorithme WS} pour réaliser des arbres de largeur optimale. Ils affirment que les graphes obtenus peuvent être à la fois plus étroits et meilleurs d'un point de vu esthétique (comme nous pouvons le voir à la figure \ref{fig:arbresWSMirror}).
+
+  \vfill
+  \begin{figure}[h]
+      \begin{center}
+        \begin{left}
+          \includegraphics[scale=0.4]{arbreWSM.png}
+        \end{left}
+        \begin{right}
+          \includegraphics[scale=0.4]{arbreMirror.png}
+        \end{right}
+      \end{center}
+    \caption{À gauche l'arbre binaire avec l'\emph{Algorithme WS}; à droite un arbre plus optimal. \cite{article81}}
+    \label{fig:arbresWSMirror}
+  \end{figure}
+  \vfill
+
+  Pour tenter de aprvenir à cette optimisation, une nouvelle contrainte \emph{Esthétique 4} est posée: un arbre est son image mirroir doivent être le reflet l'un de l'autre de plus, un sous-arbre doit être dessiné de la même manière quelque soit sa position au sein de l'arbre global.
+
+  Il est clairement visible que l'arbre en sortie de l'\emph{Algorithme WS} vu à la Figure \ref{fig:arbresWSMirror} ne respecte pas cette nouvelle contrainte. En la respectant, il devrait avoir l'air de l'arbre de droite que nous venons de voir sur la même figure.
+   
+
+
+
+
   \subsection{\emph{A Node-Positioning Algorithm for General Trees}}
   \subsection{\emph{Improving Walker’s Algorithm to Run in Linear Time}}
 

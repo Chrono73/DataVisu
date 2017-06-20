@@ -51,7 +51,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 		\begin{center}
 			\includegraphics[scale=0.4]{arbre.png}
 		\end{center}
-	\caption{Exemple d'un arbre d'après nos premières propriétés \cite{article79}}
+	\caption{Exemple d'un arbre d'après nos premières propriétés. \cite{article79}}
   \label{fig:arbre}
 \end{figure}
 \vfill
@@ -60,7 +60,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   \subsection{\emph{Tidy Drawings of Trees}}
 
   Les auteurs de l'article se sont penchés sur l'optimisation de dessin d'arbre. Dans un soucis d'espace sur lequel représenter les graphe, ils ont posé la problématique suivante (\emph{Limite Physique 1}):  la largeur de l’arbre doit être la plus petite possible (la hauteur est fixée par l’arbre). Pour rappel, la hauteur d'un n\oe{}ud correspond au nombre de branche entre lui et le \emph{Root} (cf: Figure \ref{fig:arbre} page \pageref{fig:arbre}).
-  \subsubsection{A Naive Tree Drawer}
+    \subsubsection{A Naive Tree Drawer}
 
     Le premier algorithme (\emph{Algorithme 1}) de dessin d'arbre décri par cet article est \emph{l'algorithme d'arbre naïf}. Il a comme objectif de repondre à la \emph{Limite Physique 1} en optimisant l'espace du graphe.
 
@@ -68,12 +68,69 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 
     Le fonctionnement de cet algorithme comprend une variable qui compte la prochaine coordonnée en $x$ de libre, pour y placer le prochain n\oe{}ud. Pour ce qui est de la coordonnée en $y$ elle correspond à la hauteur du n\oe{}ud dans l'arbre qui a été donnée en paramètre d'entrée de l'algorithme, de cette manière, on respecte toujours l'\emph{Esthétique 1}.
 
+    \vfill
     \begin{figure}[h]
     		\begin{center}
     			\includegraphics[scale=0.4]{arbreNaif.png}
     		\end{center}
-    	\caption{Notre premier arbre modifié par l'\emph{Algorithme 1} \cite{article79}}
+    	\caption{Notre premier arbre modifié par l'\emph{Algorithme 1}. \cite{article79}}
       \label{fig:arbreNaif}
+    \end{figure}
+    \vfill
+
+    \subsubsection{Binary Tree Drawings}
+
+    L'algorithme que nous venons de voir est efficace, mais un problème se présente lorsque nous souhaitons faire apparaitre des labels sur les n\oe{}uds. Nous en venons maintenant à un algorithme qui nous permet de prendre en compte l'affichage de label sur notre graphe. Il a été conçu pour les arbres binaires (arbres avec deux fils maximum pour un n\oe{}ud).
+
+    Les auteurs de l'article \cite{article79} font appel à une nouvelle propriété \emph{Esthétique 2} à respecter pour les ces arbres binaires: les fils de gauche doivent être placés à gauche de leur parent.
+
+    \vfill
+    \begin{figure}[h]
+    		\begin{center}
+    			\includegraphics[scale=0.4]{arbreBinaire.png}
+    		\end{center}
+    	\caption{Arbre binaire dessiné par l'\emph{Algorithme de Knuth}. \cite{article79}}
+      \label{fig:arbreBinaire}
+    \end{figure}
+    \vfill
+
+    L'arbre binaire donné par ce nouvel algorithme respect bien les contraintes de l'\emph{Esthétique 1} ainsi que de l'\emph{Esthétique 2}, mais notre \emph{Limite physique 1} n'est pas respectée. L'algorithme fait en sorte que lorsqu’un n\oe{}ud occupe une colonne, nul autre n\oe{}ud ne peut occuper cette colonne. Nous obtenons donc une largeur proportionelle au nombre total de n\oe{}ud dans l'arbre.
+
+    Il est alors nécessaire d'utiliser un algorithme différent pour que les conditions de l'\emph{Limite Physique} soient respectées.
+
+    \subsubsection{Drawings Satisfying the Physical Limit}
+
+    Nous avons vu que l'\emph{Algorithme 1} et l'\emph{Algorithme de Knuth} satisfaisaient chacun des contraintes \emph{Esthétique}. L'idée est ici de fusionner les deux algorithmes pour obtenir un algorithme qui respecte à la fois l'\emph{Esthétique 1}, l'\emph{Esthétique 2} et la \emph{Limite Physique}. L'\emph{Algorithme 3} qui résulte de cette fusion donne des meilleurs arbres que l'\emph{Algorithme 2}, mais ne respecte pas la \emph{Limite Physique} dans toutes les situations.
+
+    \vfill
+    \begin{figure}[h]
+        \begin{center}
+      		\begin{left}
+      			\includegraphics[scale=0.4]{arbreBinaireNarrow.png}
+      		\end{left}
+          \begin{right}
+            \includegraphics[scale=0.4]{arbre3.png}
+          \end{right}
+        \end{center}
+    	\caption{À gauche l'arbre binaire vu précédement à la Figure \ref{fig:arbreBinaire}; à droite un autre arbre en sortie du même algorithme.  \cite{article79}}
+      \label{fig:arbresAlgo3}
+    \end{figure}
+    \vfill
+
+    \newpage
+    L'arbre binaire que nous avons vu à la suite de l'\emph{algorithme de Knuth} est à présent optimal en largeur. Il restpect les contraintes de la \emph{Limite Physique}. Nous constatons que l'arbre qui est à droite, par contre, pourrait être plus optimisé. Il résulte de ce contre exemple que l'\emph{Algorithme 3} doit être modifié afin d'obtenir de meilleurs résultats.
+
+    Face à ce problème, les auteurs de l'article \cite{article79} ont posé une nouvelle propriété \emph{Esthétique 3}: les parents doivent être centrés par rapport à leurs fils. Cela incluant leur fils directs, mais aussi les fils de leur fils.
+
+    Le but étant qu'une fois l'\emph{Algorithme 3} modifié, notre nouvel algorithme respectera donc l'\emph{Esthétique 1}, \emph{Esthétique 2}, \emph{Esthétique 3} et la \emph{Limite Physique}.
+
+    \vfill
+    \begin{figure}[h]
+        \begin{center}
+      		\includegraphics[scale=0.5]{arbre3Modifie.png}
+        \end{center}
+    	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'utilisation de l'\emph{Algorithme 3 Modifié}. \cite{article79}}
+      \label{fig:arbresAlgo3Modifie}
     \end{figure}
     \vfill
 

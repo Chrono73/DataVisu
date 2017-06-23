@@ -87,7 +87,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
     \vfill
     \begin{figure}[h]
     		\begin{center}
-    			\includegraphics[scale=0.5]{arbreBinaire.png}
+    			\includegraphics[scale=0.4]{arbreBinaire.png}
     		\end{center}
     	\caption{Arbre binaire dessiné par l'\emph{Algorithme de Knuth}. \cite{article79}}
       \label{fig:arbreBinaire}
@@ -120,7 +120,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 
 
     L'arbre binaire que nous avons vu à la suite de l'\emph{algorithme de Knuth} est à présent optimal en largeur. Il respecte les contraintes de la \emph{Limite Physique}. Nous constatons que l'arbre qui est à droite, par contre, pourrait être plus optimisé. Il résulte de ce contre-exemple que l'\emph{Algorithme 3} doit être modifié afin d'obtenir de meilleurs résultats.\\
-
+\newpage
     L'\emph{Algorithme 3} viole en effet la \emph{Limite Physique} car il essaye d'introduire une propriété plus forte de l'\emph{Esthétique 2} : les parents doivent être centrés par rapport à leurs fils.
     Cette \emph{Esthétique 3} inclue les fils directs, mais aussi les fils des fils.\\
 
@@ -129,7 +129,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
     \vfill
     \begin{figure}[h]
         \begin{center}
-      		\includegraphics[scale=0.5]{arbreWS.png}
+      		\includegraphics[scale=0.6]{arbreWS.png}
         \end{center}
     	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'\emph{Algorithme WS modifié}. \cite{article79}}
       \label{fig:arbresAlgoWS}
@@ -141,7 +141,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 \newpage
   \subsection{\emph{Tidier Drawings of Trees}}
 
-  Cet article \cite{article81} reprend les travaux que nous venons de voir. Nous retrouvons donc les trois différentes \emph{Esthétiques} ainsi que la problématique commune de satisfaire à la fois les trois \emph{Esthétiques} et la \emph{Limite Physique}.\\
+  L'article \cite{article81} reprend les travaux que nous venons de voir. Nous retrouvons donc les trois différentes \emph{Esthétiques} ainsi que la problématique commune de satisfaire à la fois les trois \emph{Esthétiques} et la \emph{Limite Physique}.\\
 
   Les auteurs relèvent l'insuffisance de l'\emph{Algorithme WS} pour réaliser des arbres de largeur optimale. Ils notent également la proposition de l'\emph{Algorithme WS modifié} afin de la respecter au détriment de la contrainte \emph{Esthétique 3}. Cependant, ils affirment que les graphes obtenus peuvent être à la fois plus étroits et meilleurs d'un point de vue esthétique (comme nous pouvons le voir à la figure \ref{fig:arbresWSMirror}).\\
 
@@ -166,16 +166,16 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   
   L'\emph{Algorithme WS modifié} ne peut en effet pas respecter cette contrainte car la forme d'un sous-arbre est modifié en fonction de la position des nodes qui lui sont extérieurs, on peut donc obtenir des sous-arbres à la base symétriques qui sont dessinés assymétriquement.\\
   
-  \vfill
+ 
   \begin{figure}[h]
     \begin{center}
-        \includegraphics[scale=0.5]{comparArbreMiroirWS.png}
+        \includegraphics[scale=0.6]{comparArbreMiroirWS.png}
     \end{center}
     \caption{Arbre et son miroir avec l'\emph{Algorithme WS modifié}.
 	\cite{article81}}
-  \label{fig:arbresAlgoWS}
+  \label{fig:comparArbreMiroirWS}
 \end{figure}
-\vfill
+
 
   Afin de respecter l'\emph{Esthétique 4}, il est nécessaire de sacrifier de la largeur, mais les auteurs considèrent que l'\emph{Esthétique 4} est prioritaire par rapport à la \emph{Limite Physique} pour faciliter la perception humaine.\\
   
@@ -189,6 +189,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   L'\emph{Algorithme TR} peut facilement être adapté pour des arbres n-aires, sans en affecter les performances, en effectuant n-1 opérations de séparation des sous-arbres.
   Pour les forêts, cela dépend de la représentation utilisée, mais reste possible et est détaillé dans un autre article.\\
   
+  \newpage
   \subsection{\emph{A Node-Positioning Algorithm for General Trees}}
   
   L'article \cite{article90} s'intéresse au cas général des arbres n-aires, en gardant comme objectif le respect des contraintes définies dans les précédents articles, sauf l'\emph{Esthétique 2}, qui n'est pas pertinente dans les cas où les n\oe{}uds ont plus de deux fils.
@@ -200,20 +201,20 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   L'algorithme proposé réalise deux parcours de l'arbre. Premièrement, on parcourt l'arbre en assignant une valeur en $x$ temporaire à chaque n\oe{}ud ainsi qu'en remplissant un champ particulier qui servira à décaler ses noeuds au second parcours. Ce premier parcours est réalisé de la même manière que dans l'article \cite{article81}, avec un parcours postfixe qui décale les sous-arbres des n\oe{}uds de manière à respecter à tous les niveaux de profondeur un écartement défini. On peut noter qu'il n'y a pas de mécanisme pour rapprocher les sous-arbres alors qu'on pourrait à une itération ne pas avoir à écarter les sous-arbres, dans le cas d'un sous-arbre gauche très écarté vers la gauche par exemple, mais que l'on ne rapproche pas pour autant, alors qu'il pourrait être très éloigné d'un grand sous-arbre droit. Cet agglutinement est d'ailleurs selon les auteurs le défaut des algorithmes précédents (articles \cite{article79}, et \cite{article81}).
   La correction proposée est d'utiliser un modificateur de position pour déplacer les sous-arbres, et dans ce cas précis les rapprocher lorsque c'est possible.\\
   
-  Le second parcours permet d'attribuer la coordonnée en $x$ définitive grâce à ce modificateur présents sur les n\oe{}uds.\\
+  Le second parcours permet d'attribuer la coordonnée en $x$ définitive grâce à ce modificateur présent sur les n\oe{}uds.\\
   
    \vfill
   \begin{figure}[h]
     \begin{center}
-        \includegraphics[scale=0.5]{arbreWalker.png}
+        \includegraphics[scale=0.4]{arbreWalker.png}
     \end{center}
     \caption{Arbres montrant l'effet observé d'agglutinement à gauche, à droite, puis le résultat idéal.
 	\cite{article90}}
-  \label{fig:arbresAlgoWS}
+  \label{fig:arbresWalker}
 \end{figure}
 \vfill
   
-  
+  \newpage
   \subsection{\emph{Improving Walker’s Algorithm to Run in Linear Time}}
   
   Dans l'article \cite{article02}, l'auteur reprend les algorithmes de dessin de graphes, en rappelant la complexité linéaire de l'exécution des algorithmes \emph{Algorithme WS}, \emph{Algorithme TR}. Cependant, contrairement à ce qui est annoncé par Walker dans son article \cite{article90}, la complexité de son algorithme est quadratique et non linéaire. Aussi, l'auteur propose une amélioration à l'\emph{Algorithme de Walker} pour réduire sa complexité algorithmique et garder une exécution en temps linéaire en nombre de n\oe{}uds.\\
@@ -224,11 +225,11 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
   \vfill
   \begin{figure}[h]
     \begin{center}
-        \includegraphics[scale=0.5]{arbreWalker.png}
+        \includegraphics[scale=0.4]{comparArbresBuchheim.png}
     \end{center}
     \caption{Arbres dénotant l'effet de décalage à gauche (a), à droite (b), la moyenne des deux (c) et la version où les sous-arbres sont espacés équitablement (d).
-	\cite{article90}}
-  \label{fig:arbresAlgoWS}
+	\cite{article02}}
+  \label{fig:comparArbresBuchheim}
 \end{figure}
 \vfill
 
@@ -239,32 +240,75 @@ Pour améliorer l'\emph{Algorithme de Walker}, plusieurs traitements sont prése
 \newpage
 \section{Implémentation des algorithmes}
 
-Suite à la lecture et à l'analyse des articles, il nous faut maintenant implémenter les algorithmes que nous venons de brièvement présenter. Il va sans dire que nous n'allons pas implémenter la totalité des algorithmes, mais seulement les deux qui nous semblent \emph{clés} dans l'évolution chronologique de l'optimisation d'arbres.\\
+Suite à la lecture et à l'analyse des articles, nous avons voulu implémenter les algorithmes que nous venons de brièvement présenter. Il va sans dire que nous n'allions pas implémenter la totalité des algorithmes, mais seulement les deux qui nous semblent \emph{clés} dans l'évolution chronologique de l'optimisation d'arbres, c'est à dire celui de \emph{Walker} et son optimisation.\\
 
-Implémenter les algorithmes en Python n'était pas chose simple, il nous a fallu comprendre la version des algorithmes tantôt en \emph{Pascal}, tantôt en \emph{Pseudo-code}. Le fait que les articles datent de quelques années (voir de quelques décennies pour certains) nous a posé problème. En effet, nous nous sommes interrogés sur la logique algorithmique de certains codes, notamment l'\emph{Algorithme de Walker} de l'article \cite{article90}. De plus, la clarté des paragraphes explicatifs des algorithmes laissant à désirer, la tâche de compréhension et retranscription de certaines fonctions n'a pas été facile. Nous avons également constaté que certaines fonctions (et non les plus triviales) ne sont pas définies bien qu'utilisées dans les algorithmes.\\
+Implémenter l'algorithme de Walker en Python avec l'interface Tulip n'était pas chose simple car il nous a fallu comprendre les algorithmes présentés tantôt en \emph{Pascal}, tantôt en \emph{Pseudo-code}. Le fait que les articles dataient de quelques années (voir de quelques décennies pour certains) nous a posé problème. En effet, nous nous sommes interrogés sur la logique algorithmique du code de l'article \cite{article90}, celui-ci présentant des suites d'instructions illogiques au premier abord. De plus, la clarté des paragraphes explicatifs laissant à désirer, la tâche de compréhension et retranscription de certaines fonctions n'a pas été facile. Nous avons également constaté que certaines fonctions (et non les plus triviales) n'étaient pas définies bien qu'utilisées dans les algorithmes.\\
 
-Les algorithmes que nous avons trouvés les plus pertinents à implémenter sont: celui de \emph{Walker} décrit dans l'article \cite{article90} et celui décrit dans l'article \cite{article02} qui est une modification de l'\emph{Algorithme de Walker}.\\
+À cause de tous ces facteurs, il nous a fallu tenter de corriger ce qui semblait être des erreurs de la part de l'auteur du rapport, comme des \emph{utilisations de variables non déclarées}, des \emph{boucles qui ne sont jamais invoquées ou ne bouclent qu'une unique fois}, des \emph{variables non utilisées}, des \emph{affectations de valeur illégales}, le tout en bataillant contre les \emph{plantages de Tulip} à  chaque chargement du script.\\
 
 \subsection{Implémentation \emph{Python} de l'\emph{Algorithme de Walker} \cite{article90}}
 
-\subsection{Implémentation \emph{Python} de l'\emph{Algorithme de Walker} amélioré \cite{article02}}
+Notre tentative d'implémentation de l'algorithme de \emph{Walker} en Python peut être trouvée dans la même archive que ce rapport, dans le fichier \emph{walker.py}. Les dernières erreurs que nous n'avons pas réussi à corriger se situent dans la fonction \emph{apportion}, qui est justement celle censée différencier l'algorithme de ceux des articles précédents. C'est cette même fonction qui, d'après le 4e article, fait exploser la complexité de l'algorithme, qui n'est alors plus linéaire.\\
 
-\subsection{Différences Algorithmiques}
+C'est dans cette fonction que nous avons trouvé le plus d'erreurs logiques ou de syntaxe, et c'est donc cette fonction qui nous a demandé le plus d'expérimentation et le plus d'improvisation, pour en arriver à une version qui fonctionne sur certains arbres aléatoires et ne fonctionne pas sur d'autres. De plus, même si l'algorithme s'exécute sans erreur, certaines edges du graphe s'entrecroisent toujours, car les sous-arbres ne sont pas proprement espacés.
+L'erreur qui nous semble la plus flagrante a été signalée dans le code par un commentaire, et est présentée ci-dessous.\\
 
+  \begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.4]{erreur1.png}
+    \end{center}
+  \end{figure}
+
+  \begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.4]{erreur2.png}
+    \end{center}
+    \caption{Captures d'écran d'une des erreurs dans la logique de l'algorithme, extraite de la fonction \emph{apportion}.}
+    \label{fig:erreur2}
+  \end{figure}
+
+On peut voir dans la figure \ref{fig:erreur2} que lorsque l'on sort de la première boucle while, si cette boucle a été appellée au moins une fois (ce qui a toujours été le cas en pratique), on a soit TempPtr vide ou égal à AncestorNeighbor. Dans ce dernier cas, on rentre ensuite dans le bloc \emph{if} suivant, où l'on réinitialise la valeur de TempPtr (ayant été modifiée par la boucle, sinon il y aurait division par 0 à la définition de Portion), avant de tenter de boucler sur la condition \emph{TempPtr = AncestorNeighbor}, qui n'est donc jamais réalisable.
+Encore une fois, même si nous avions \emph{Node = TempPtr = AncestorNeighbor}, il y aurait une erreur puisque la première boucle n'incrémenterait pas la valeur de LeftSiblings, ce qui provoquerait une division par 0.
+
+\subsection{Comparaisons des résultats}
+
+Sont présentés dans la figure \ref{fig:walkers} deux exemples d'arbres ayant été déssinés par notre implémentation de l'algorithme de Walker et par le plugin Walker propre à Tulip. Les images de gauche sont les résultats de notre propre implémentation, celles de droite montrent les résultats de l'algorithme natif.
 
 \newpage
-\section{Étude empirique des algorithmes}
+\vfill
+  \begin{figure}[h]
+      \begin{center}
+        \begin{left}
+          \includegraphics[scale=0.22]{exemple1.png}
+        \end{left}
+        \begin{right}
+          \includegraphics[scale=0.22]{exemple1correct.png}
+        \end{right}
+      \end{center}
+      \begin{center}
+        \begin{left}
+          \includegraphics[scale=0.22]{exemple2.png}
+        \end{left}
+        \begin{right}
+          \includegraphics[scale=0.22]{exemple2correct.png}
+        \end{right}
+      \end{center}
+    \caption{À gauche l'arbre binaire avec \emph{notre implémentation}; à droite l'implémentation Tulip native.}
+    \label{fig:walkers}
+  \end{figure}
+  \vfill
 
-L'implémentation en \emph{Python} des deux algorithmes étant réalisée, il est questions maintenant d'étudier leur comportement sur des jeux de données. Nous allons pouvoir ainsi comparer les résultats entre la version initiale de  l'\emph{Algorithme de Walker} et sa version modifiée dans l'article \cite{article02}.\\
+\newpage
+\subsection{Implémentation \emph{Python} de l'\emph{Algorithme de Walker} amélioré \cite{article02}}
 
-Nous profiterons de cette étude empirique comparative de nos deux algorithmes pour comparer également les résultats obtenus entre notre \emph{Algorithme de Walker} amélioré et entre celui qui est disponible dans \emph{Tulip} qui se nomme \emph{Improved Walker}.\\
+N'ayant pas réussi à implémenter complètement l'algorithme de \emph{Walker}, il nous a été impossible de l'utiliser pour programmer l'amélioration présentée dans le 4ième article sans repartir de 0, ni de la comparer ensuite à l'algorithme de Walker amélioré déjà implémenté nativement dans Tulip.\\
 
+Toute étude comparative empirique de ces deux algorithmes est donc malheureusement impossible dans l'état actuel de notre implémentation, et le restera tant que des tests plus élaborés ne seront pas réalisés pour tenter de corriger les nombreuses erreurs présentes dans le document.\\
 
 \newpage
 \section{Conclusion}
 
-
-
+Les quatre algorithmes montrent une évolution temporelle intéressante, chaque algorithme reprenant le précédent en l'améliorant. L'\emph{Algorithme WS} est un algorithme basique, permettant de définir des critères \emph{Esthétiques} à respecter et propose deux algorithmes qui ne remplissent pas tous les critères en même temps. L'\emph{Algorithme TR} reprend l'\emph{Algorithme WS} en ajoutant une contrainte de symétrie des sous-arbres qui n'était pas respectée à cause de l'assignation des coordonnées de gauche à droite et qui dépendait de la position de n\oe{}uds extérieurs aux sous-arbres. L'\emph{Algorithme de Walker} reprend l'\emph{Algorithme TR} en généralisant aux arbres n-aires et en corrigeant un phénomène d'agglutinement qui pouvait se produire lorsqu'un grand sous-arbre était ajoutée à droite d'un plus petit. L'\emph{Algorithme de Walker amélioré} reprend l' \emph{Algorithme de Walker} en diminuant sa complexité algorithmique pour qu'elle redevienne linéaire, comme les précédents algorithmes. Cependant, malgré nos efforts, l'impossibilité de reproduire dans un environnement de test l'algorithme de Walker nous a empêché de pousser plus loin notre étude.
 
 \newpage
 \medskip

@@ -16,8 +16,10 @@ class Walker(object):
         self.graph = graph
         n = self.graph.getNodes()
         self.root = n.next()
-        
+
         self.graph.getIntegerProperty('levelIndex')
+        self.prelim = self.graph.getDoubleProperty('prelim')
+        self.modifier = self.graph.getDoubleProperty('modifier')
 
         self.levelZeroPtr = list()
         self.xTopAdjustment = 0
@@ -37,7 +39,7 @@ class Walker(object):
         for n in nodes:
             self.graph['levelIndex'][n] = levelCounter[self.level(n)]
             levelCounter[self.level(n)] += 1
-    
+
         # Renvoie la index-ieme node du niveau lvl du graphe
     def getNthNodeAtLevel(self, lvl, index):
         nodes = self.graph.getNodes()
@@ -148,28 +150,43 @@ class Walker(object):
     def yCoord(self, node):
         return self.graph['viewLayout'][node].getY()
 
-        # Permet de definir la coordonnee x preliminaire de la node
-    def prelim(self, node, val):
-        self.graph['prelim'][node] = val
-
-        # Permet de definir le modificateur de la node
-    def modifier(self, node, val):
-        self.graph['modifier'][node] = val
-
         # Renvoie la node devant etre disposee a gauche de la node en parametre
     def leftNeighbor(self, node):
         return self.getNthNodeAtLevel(self.level(node), self.graph['levelIndex'][node]-1)
-            
 
     def initPrevNodeList(self):
         for i in range(0, self.graph['viewMetric'][root]):
             self.levelZeroPtr.append(None)
+        '''
+            GetPrevNodeAtLevel and SetPrevNodeAtLevel are just the regular getter and setter
+            for this list.
+            CheckExtentsRange is useless in the context of Tulip
+        '''
 
-    '''
-        GetPrevNodeAtLevel and SetPrevNodeAtLevel are just the regular getter and setter
-        for this list.
-        CheckExtentsRange is useless in the context of Tulip
-    '''
+    def firstWalk(self, node, lvl):
+        self.levelZeroPtr[lvl] = node
+        self.modifier[node] = 0
+        if ((not self.hasChild(node)) or (lvl == MaxDepth)):
+            if (self.hasLeftSibling(node)):
+                self.prelim[node] = self.prelim[self.leftSibling(node)]
+                self.prelim[node] += self.SiblingSeparation + 1.0
+            else:
+                self.prelim[node] = 0
+        else:
+            leftmost = self.firstChild(node)
+            rightmost = self.firstChild(node)
+            self.firstWalk(leftmost, lvl+1)
+            while (self.hasRightSibling(rightmost)):
+                rightmost = rightSibling(rightmost)
+                self.firstWalk(rightmost, lvl+1)
+            midpoint = (self.prelim[leftmost] + self.prelim[rightmost])/2.0
+            if (self.hasLeftSibling(node)):
+                self.prelim[node] = self.prelim[self.leftSibling(node)]
+                self.prelim[node] += self.SiblingSeparation + 1.0
+                self.modifier[node] = self.prelim[node] - midpoint
+                self.apportion(node, lvl)
+            else:
+                self.prelim[node] = midpoint
 
     def getLeftMost(self, node, level, depth):
         if (level >= depth):
@@ -183,6 +200,48 @@ class Walker(object):
                 rightmost = rightSibling(rightmost)
                 leftmost = self.getLeftMost(rightmost, level+1, depth)
             return leftmost
+            
+    def apportion(self, node, lvl):
+        leftmost = self.firstChild(node)
+        neighbor = self.leftNeighbor(leftmost)
+        compareDepth = 1
+        depthToStop = MaxDepth - lvl
+
+        while (not (leftmost == None) and not (neighbor == None) and (compareDepth >= depthToStop)):
+            leftModSum = 0
+            rightModSum = 0
+            ancestorLeftmost = leftmost
+            ancestorNeighbor = neighbor
+            for i in range(0, compareDepth+1):
+                ancestorLeftmost = self.parent(ancestorLeftmost)
+                ancestorNeighbor = self.parent(ancestorNeighbor)
+                rightModSum += self.modifier(ancestorLeftmost)
+                leftModSum += self.modifier(ancestorNeighbor)
+            moveDistance = self.prelim[neighbor] + leftModSum + SubtreeSeparation + 1
+            moveDistance -= (self.prelim[leftmost] + rightModSum)
+
+            if (moveDistance > 0):
+                tempPtr = node
+                leftSiblings = 0
+                while (not (tempPtr == None) and not (tempPtr == ancestorNeighbor)):
+                    leftSiblings += 1
+                    tempPtr = self.leftSibling(tempPtr)
+                if not (tempPtr == None):
+                    portion = moveDistance / leftSiblings
+                    tempPtr = node
+                    while (tempPtr == ancestorNeighbor):
+                        self.prelim[tempPtr] += moveDistance
+                        self.modifier[tempPtr] += moveDistance
+                        moveDistance -= portion
+                        tempPtr = self.leftSibling(tempPtr)
+                else:
+                    return
+
+            compareDepth += 1
+            if not (self.hasChild(leftmost)):
+                leftmost = getLeftMost(node, 0, compareDepth)
+            else:
+                leftmost = self.firstChild(leftmost)
 
     def positionTree(self, node):
         if (node == None):
@@ -192,7 +251,7 @@ class Walker(object):
             initPrevNodeList()
             firstWalk(node, 0)
 
-            xTopAdjustment = xCoord(node) - prelim(node)
+            xTopAdjustment = xCoord(node) - prelim[node]
             yTopAdjustment = yCoord(node)
 
             return secondWalk(node, 0, 0)

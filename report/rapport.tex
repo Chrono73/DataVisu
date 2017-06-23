@@ -152,15 +152,14 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
           \includegraphics[scale=0.4]{arbreMirror.png}
         \end{right}
       \end{center}
-    \caption{À gauche l'arbre binaire avec l'\emph{Algorithme WS}; à droite un arbre plus optimal. \cite{article81}}
+    \caption{À gauche l'arbre binaire avec l'\emph{Algorithme WS};  \cite{article81}}
     \label{fig:arbresWSMirror}
   \end{figure}
   \vfill
 
-  Pour tenter de parvenir à cette optimisation, une nouvelle contrainte \emph{Esthétique 4} est posée: un arbre et son image miroir doivent être le reflet l'un de l'autre. De plus, un sous-arbre doit être dessiné de la même manière quelle que soit sa position au sein de l'arbre global.
+  Pour tenter de parvenir à cette optimisation, une nouvelle contrainte \emph{Esthétique 4} est posée: un arbre est son image mirroir doivent être le reflet l'un de l'autre de plus, un sous-arbre doit être dessiné de la même manière quelque soit sa position au sein de l'arbre global.
 
-  Il est clairement visible que l'arbre en sortie de l'\emph{Algorithme WS} vu à la Figure \ref{fig:arbresWSMirror} ne respecte pas cette nouvelle contrainte. En la respectant, il devrait ressembler à l'arbre de droite que nous venons de voir sur la même figure.
-   
+  Il est clairement visible que l'arbre en sortie de l'\emph{Algorithme WS} vu à la Figure \ref{fig:arbresWSMirror} ne respecte pas cette nouvelle contrainte. En la respectant, il devrait avoir l'air de l'arbre de droite que nous venons de voir sur la même figure.
 
 
 
@@ -171,6 +170,17 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 
 \newpage
 \section{Implémentation des algorithmes}
+
+Suite à la lecture et à l'analyse des articles, il nous faut maintenant implémenter les algorithmes que nous venons de brièvement présenter. Il va sans dire que nous n'allons pas implémenter la totalité des algorithmes, mais seulement le deux qui nous semblent \emph{clés} dans l'évolution chronologique de l'optimisation d'arbre.
+
+Implémenter les algorithmes en Python n'était pas chose simple, il nous a fallu comprendre la version des algorithmes tantôt en \emph{Pascal}, tantôt en \emph{Pseudo-code}. Le fait que les articles datent de quelques années (voir de quelques décennies pour certain) nous a posé problème. En effet, nous nous sommes interrogé sur la logique algorithmique de certains codes, notamment l'\emph{Algorithme de Walker} de l'article \cite{article90}. De plus, la clarté des paragraphes explicatifs des algorithmes laissant à désirer, la tâche de compréhension et retranscription de certaines fonctions n'a pas été facile.
+
+Les algorithmes que nous avons trouvés les plus pertinents à implémenter sont: celui de \emph{Walker} décrit dans l'article \ref{article90} et celui décrit dans l'article \ref{article02} qui est une modification de l'\emph{Algorithme de Walker}.
+
+\subsection{Implémentation Python de l'\emph{Algorithme de Walker} \ref{article90}}
+
+\subsection{Implémentation Python de l'\emph{Algorithme de Walker} amélioré \ref{article02}}
+
 
 \newpage
 \section{Étude empirique des algorithmes}

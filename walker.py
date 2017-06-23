@@ -28,7 +28,6 @@ class Walker(object):
 
         self.LevelSeparation = 50
         self.MaxDepth = self.graph['viewMetric'].getNodeMax()
-        print self.MaxDepth
         self.SiblingSeparation = 40
         self.SubtreeSeparation = 70
 
@@ -190,10 +189,8 @@ class Walker(object):
 
     def secondWalk(self, node, lvl, modsum):
         result = True
-        print node
 
         if (lvl <= self.MaxDepth):
-            print lvl
             xTemp = self.xTopAdjustment + self.prelim[node] + modsum
             yTemp = self.level(node) * self.LevelSeparation
             self.coords[node] = tlp.Coord(xTemp, -yTemp, 0)
@@ -201,11 +198,6 @@ class Walker(object):
                 result = self.secondWalk(self.firstChild(node), lvl+1, modsum+self.modifier[node])
             if (self.hasRightSibling(node)):
                 result = self.secondWalk(self.rightSibling(node), lvl, modsum)
-        else:
-            print 'Level over MaxDepth'
-            print self.MaxDepth
-            print self.level(node)
-            print lvl
         return result
 
     def getLeftMost(self, node, level, depth):
@@ -217,7 +209,7 @@ class Walker(object):
             rightmost = self.firstChild(node)
             leftmost = self.getLeftMost(rightmost, level+1, depth)
             while ((leftmost == None) and (self.hasRightSibling(rightmost))):
-                rightmost = rightSibling(rightmost)
+                rightmost = self.rightSibling(rightmost)
                 leftmost = self.getLeftMost(rightmost, level+1, depth)
             return leftmost
 
@@ -225,14 +217,14 @@ class Walker(object):
         leftmost = self.firstChild(node)
         neighbor = self.leftNeighbor(leftmost)
         compareDepth = 1
-        depthToStop = self.MaxDepth - self.level(node)
+        depthToStop = self.MaxDepth - lvl
 
         while (not (leftmost == None) and not (neighbor == None) and (compareDepth <= depthToStop)):
             leftModSum = 0
             rightModSum = 0
             ancestorLeftmost = leftmost
             ancestorNeighbor = neighbor
-            for i in range(0, compareDepth+1):
+            for i in range(0, compareDepth):
                 ancestorLeftmost = self.parent(ancestorLeftmost)
                 ancestorNeighbor = self.parent(ancestorNeighbor)
                 rightModSum += self.modifier[ancestorLeftmost]
@@ -243,18 +235,16 @@ class Walker(object):
             if (moveDistance > 0):
                 tempPtr = node
                 leftSiblings = 0
-                print ancestorNeighbor
                 while (not (tempPtr == None) and not (tempPtr == ancestorNeighbor)):
-                    print 'ping'
-                    print tempPtr
                     leftSiblings += 1
                     tempPtr = self.leftSibling(tempPtr)
                 if not (tempPtr == None):
-                    print 'test1'
                     portion = moveDistance / leftSiblings
                     tempPtr = node
-                    while (tempPtr == ancestorNeighbor):
-                        print 'test2'
+                    # Dans le document de Walker, c'est une égalité et non une
+                    # différence, mais cela n'a aucun sens, ceci nous semble
+                    # être l'instruction qui était censé être demandée.
+                    while not (tempPtr == ancestorNeighbor):
                         self.prelim[tempPtr] += moveDistance
                         self.modifier[tempPtr] += moveDistance
                         moveDistance -= portion
@@ -264,7 +254,7 @@ class Walker(object):
 
             compareDepth += 1
             if not (self.hasChild(leftmost)):
-                leftmost = getLeftMost(node, 0, compareDepth)
+                leftmost = self.getLeftMost(node, 0, compareDepth)
             else:
                 leftmost = self.firstChild(leftmost)
 
@@ -280,7 +270,6 @@ class Walker(object):
             self.yTopAdjustment = self.coords[node].getY()
 
             result =  self.secondWalk(node, 0, 0)
-            print result
             return result
 
 def main(graph):

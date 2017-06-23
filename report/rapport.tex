@@ -40,7 +40,7 @@ Pour finir, nous allons étudier plus en détail nos algorithmes à l'aide de je
 \newpage
 \section{Étude préliminaire des articles}
 
-Ayant relevé une continuité chronologique, dans la mesure où les auteurs reprennent les travaux des précédents articles. Notre étude des articles gardera cet ordre chronologique.
+Ayant relevé une continuité chronologique, dans la mesure où les auteurs reprennent les travaux des précédents articles, notre étude des articles gardera cet ordre chronologique.
 
 Avant d'entrer dans l'étude des algorithmes, il est important de définir les caractéristiques principales de ces graphes. Un arbre, tel que défini dans notre premier article \cite{article79}, est un graphe plan dans lequel aucune arête ne se croise, chaque n\oe{}ud du graphe comprend un unique prédécesseur (à l'exception du n\oe{}ud racine: \emph{Root}), un n\oe{}ud ne peut se trouver plus proche du \emph{Root} que ses n\oe{}uds parents, le dernier n\oe{}ud d'une branche (n\oe{}ud qui n'a pas de fils) est appelé feuille. La dernière caractéristique de base d'un arbre est l'alignement de ses n\oe{}uds, les n\oe{}uds d’une même hauteur doivent être sur la même ligne de sorte que toutes les hauteurs soient sur des lignes parallèles (cette dernière propriété est noté dans l'article \cite{article79}: \emph{Esthétique 1}).
 
@@ -94,7 +94,7 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
     \end{figure}
     \vfill
 
-    L'arbre binaire donné par ce nouvel algorithme respecte bien les contraintes de l'\emph{Esthétique 1} ainsi que de l'\emph{Esthétique 2}, mais notre \emph{Limite physique 1} n'est pas respectée. L'algorithme fait en sorte que lorsqu’un n\oe{}ud occupe une colonne, nul autre n\oe{}ud ne peut occuper cette colonne. Nous obtenons donc une largeur proportionelle au nombre total de n\oe{}ud dans l'arbre.
+    L'arbre binaire donné par ce nouvel algorithme respecte bien les contraintes de l'\emph{Esthétique 1} ainsi que de l'\emph{Esthétique 2}, mais notre \emph{Limite physique 1} n'est pas respectée. L'algorithme fait en sorte que lorsqu’un n\oe{}ud occupe une colonne, nul autre n\oe{}ud ne peut occuper cette colonne. Nous obtenons donc une largeur proportionelle au nombre total de n\oe{}uds dans l'arbre.
 
     Il est alors nécessaire d'utiliser un algorithme différent pour que les conditions de la \emph{Limite Physique} soient respectées.
 
@@ -121,26 +121,29 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
 
     L'arbre binaire que nous avons vu à la suite de l'\emph{algorithme de Knuth} est à présent optimal en largeur. Il respecte les contraintes de la \emph{Limite Physique}. Nous constatons que l'arbre qui est à droite, par contre, pourrait être plus optimisé. Il résulte de ce contre exemple que l'\emph{Algorithme 3} doit être modifié afin d'obtenir de meilleurs résultats.
 
-    Face à ce problème, les auteurs de l'article \cite{article79} ont posé une nouvelle propriété \emph{Esthétique 3}: les parents doivent être centrés par rapport à leurs fils. Cela incluant leurs fils directs, mais aussi les fils de leur fils.
+    L'\emph{Algorithme 3} viole en effet la \emph{Limite Physique} car il essaye d'introduire une propriété plus forte de l'\emph{Esthétique 2} : les parents doivent être centrés par rapport à leurs fils.
+    Cette \emph{Esthétique 3} inclue les fils directs, mais aussi les fils des fils.
 
-    Le but étant qu'une fois l'\emph{Algorithme 3} modifié (que l'on va appeler \emph{Algorithme WS}), notre nouvel algorithme respectera donc l'\emph{Esthétique 1}, \emph{Esthétique 2}, \emph{Esthétique 3} et la \emph{Limite Physique}.
+    Face à ce problème, les auteurs de l'article \cite{article79} propose une version modifiée de l'\emph{Algorithme WS}, où l'on privilégie la contrainte de \emph{Limite Physique} plutôt que cette contrainte \emph{Esthétique 3}.
 
     \vfill
     \begin{figure}[h]
         \begin{center}
       		\includegraphics[scale=0.5]{arbreWS.png}
         \end{center}
-    	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'\emph{Algorithme WS}. \cite{article79}}
+    	\caption{Arbre de droite de la Figure \ref{fig:arbresAlgo3} après l'\emph{Algorithme WS modifié}. \cite{article79}}
       \label{fig:arbresAlgoWS}
     \end{figure}
     \vfill
+    
+    L'\emph{Algorithme 3} présenté ne concerne que les arbres binaires mais peut aussi être adapté pour d'autres types d'arbres, en choisissant un moyen de placer les n\oe{}uds parents au-dessus de leurs enfants en tenant compte de leurs nombres ou d'autres spécificités de l'arbre.
 
 \newpage
   \subsection{\emph{Tidier Drawings of Trees}}
 
   Cet article \cite{article81} reprend les travaux que nous venons de voir. Nous retrouvons donc les trois différentes \emph{Esthétiques} ainsi que la problématique commune de satisfaire à la fois les trois \emph{Esthétiques} et la \emph{Limite Physique}.
 
-  Les auteurs relèvent l'insuffisance de l'\emph{Algorithme WS} pour réaliser des arbres de largeur optimale. Ils affirment que les graphes obtenus peuvent être à la fois plus étroits et meilleurs d'un point de vue esthétique (comme nous pouvons le voir à la figure \ref{fig:arbresWSMirror}).
+  Les auteurs relèvent l'insuffisance de l'\emph{Algorithme WS} pour réaliser des arbres de largeur optimale. Ils notent également la proposition de l'\emph{Algorithme WS modifié} afin de la respecter au détriment de la contrainte \emph{Esthétique 3}. Cependant, ils affirment que les graphes obtenus peuvent être à la fois plus étroits et meilleurs d'un point de vue esthétique (comme nous pouvons le voir à la figure \ref{fig:arbresWSMirror}).
 
   \vfill
   \begin{figure}[h]
@@ -152,21 +155,68 @@ Maintenant que notre arbre de base est défini, nous pouvons nous intéresser au
           \includegraphics[scale=0.4]{arbreMirror.png}
         \end{right}
       \end{center}
-    \caption{À gauche l'arbre binaire avec l'\emph{Algorithme WS};  \cite{article81}}
+    \caption{À gauche l'arbre binaire avec l'\emph{Algorithme WS modifié}; à droite un arbre plus optimal. \cite{article81}}
     \label{fig:arbresWSMirror}
   \end{figure}
   \vfill
 
-  Pour tenter de parvenir à cette optimisation, une nouvelle contrainte \emph{Esthétique 4} est posée: un arbre est son image mirroir doivent être le reflet l'un de l'autre de plus, un sous-arbre doit être dessiné de la même manière quelque soit sa position au sein de l'arbre global.
+  Pour tenter de parvenir à cette optimisation, une nouvelle contrainte \emph{Esthétique 4} est posée: un arbre et son image miroir doivent être le reflet l'un de l'autre. De plus, un sous-arbre doit être dessiné de la même manière quelle que soit sa position au sein de l'arbre global.
 
-  Il est clairement visible que l'arbre en sortie de l'\emph{Algorithme WS} vu à la Figure \ref{fig:arbresWSMirror} ne respecte pas cette nouvelle contrainte. En la respectant, il devrait avoir l'air de l'arbre de droite que nous venons de voir sur la même figure.
+  Il est clairement visible que l'arbre en sortie de l'\emph{Algorithme WS modifié} vu à la Figure \ref{fig:arbresWSMirror} ne respecte pas cette nouvelle contrainte. En la respectant, il devrait ressembler à l'arbre de droite que nous venons de voir sur la même figure.
+  
+  L'\emph{Algorithme WS modifié} ne peut en effet pas respecter cette contrainte car la forme d'un sous-arbre est modifié en fonction de la position des nodes qui lui sont extérieurs, on peut donc obtenir des sous-arbres à la base symétriques qui sont dessinés assymétriquement.
+  
+  \vfill
+  \begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.5]{comparArbreMiroirWS.png}
+    \end{center}
+    \caption{Arbre et son miroir avec l'\emph{Algorithme WS modifié}.
+	\cite{article81}}
+  \label{fig:arbresAlgoWS}
+\end{figure}
+\vfill
 
-
-
-
+  Afin de respecter l'\emph{Esthétique 4}, il est nécessaire de sacrifier de la largeur, mais les auteurs considèrent que l'\emph{Esthétique 4} est prioritaire par rapport à la \emph{Limite Physique} pour faciliter la perception humaine.
+  
+  L'idée de l'algorithme proposé, l'\emph{Algorithme TR}, est de générer les sous-arbres d'un même n\oe{}ud de manière séparée, puis de les placer les plus proches possible.
+  Ceci est d'abord réalisé par un parcours postfixe, en superposant les arbres et en les déplaçant jusqu'à ce que les arbres ne se chevauchent à aucun niveau de profondeur, avec une distance minimale incompressible définie. Une fois ces positions connues, il suffit de faire un parcours préfixe de l'arbre, en donnant des positions absolues aux n\oe{}uds.
+  
+  Cet algorithme respecte à la fois les contraintes d'\emph{Esthétique 1}, \emph{Esthétique 2}, \emph{Esthétique 3}, mais en plus l'\emph{Esthétique 4} définie précédemment.
+  
+  
+  \subsubsection{Generalization to m-ary trees and forests}
+  L'\emph{Algorithme TR} peut facilement être adapté pour des arbres n-aires, sans en affecter les performances, en effectuant n-1 opérations de séparation des sous-arbres.
+  Pour les forêts, cela dépend de la représentation utilisée, mais reste possible et est détaillé dans un autre article.
+  
   \subsection{\emph{A Node-Positioning Algorithm for General Trees}}
+  
+  L'article \cite{article90} s'intéresse au cas général des arbres n-aires, en gardant comme objectif le respect des contraintes définies dans les précédents articles, sauf l'\emph{Esthétique 2}, qui n'est pas pertinente dans les cas où les n\oe{}uds ont plus de deux fils.
+  L'\emph{Esthétique 4}, définie plus tôt, est d'ailleurs renforcée en imposant également que des petits sous-arbres ne soient pas arbitraitement positionnés lorsque proches d'autres sous-arbres plus grands.
+  Ainsi, des petits sous-arbres aux extrêmes gauche et droite devraient être placés de manière adjacente à leurs sous-arbres voisins plus grands.
+  
+  Il est admis qu'on ne cherche que la position en $x$ des n\oe{}uds, la position en $y$ étant déterminée par la hauteur dans l'arbre.
+  
+  L'algorithme proposé réalise deux parcours de l'arbre. Premièrement, on parcourt l'arbre en assignant une valeur en $x$ temporaire à chaque n\oe{}ud ainsi qu'en remplissant un champ particulier qui servira à décaler ses noeuds au second parcours. Ce premier parcours est réalisé de la même manière que dans l'article \cite{article81}, avec un parcours postfixe qui décale les sous-arbres des n\oe{}uds de manière à respecter à tous les niveaux de profondeur un écartement défini. On peut noter qu'il n'y a pas de mécanisme pour rapprocher les sous-arbres alors qu'on pourrait à une itération ne pas avoir à écarter les sous-arbres, dans le cas d'un sous-arbre gauche très écarté vers la gauche par exemple, mais que l'on ne rapproche pas pour autant, alors qu'il pourrait être très éloigné d'un grand sous-arbre droit. Cet agglutinement est d'ailleurs selon les auteurs le défaut des algorithmes précédents (articles \cite{article79}, et \cite{article81}).
+  La correction proposée est d'utiliser un modificateur de position pour déplacer les sous-arbres, et dans ce cas précis les rapprocher lorsque c'est possible.
+  
+  Le second parcours permet d'attribuer la coordonnée en $x$ définitive grâce à ce modificateur présents sur les n\oe{}uds.
+  
+   \vfill
+  \begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.5]{arbreWalker.png}
+    \end{center}
+    \caption{Arbres montrant l'effet observé d'agglutinement à gauche, à droite, puis le résultat idéal.
+	\cite{article90}}
+  \label{fig:arbresAlgoWS}
+\end{figure}
+\vfill
+  
+  
   \subsection{\emph{Improving Walker’s Algorithm to Run in Linear Time}}
-
+  
+  
 
 \newpage
 \section{Implémentation des algorithmes}

@@ -20,6 +20,7 @@ class Walker(object):
         self.graph.getIntegerProperty('levelIndex')
         self.prelim = self.graph.getDoubleProperty('prelim')
         self.modifier = self.graph.getDoubleProperty('modifier')
+        self.coords = self.graph.getLayoutProperty('viewLayout')
 
         self.levelZeroPtr = list()
         self.xTopAdjustment = 0
@@ -142,14 +143,6 @@ class Walker(object):
         except StopIteration:
             return None
 
-        # Renvoie la coordonnee x de la node
-    def xCoord(self, node):
-        return self.graph['viewLayout'][node].getX()
-
-        # Renvoie la coordonnee y de la node
-    def yCoord(self, node):
-        return self.graph['viewLayout'][node].getY()
-
         # Renvoie la node devant etre disposee a gauche de la node en parametre
     def leftNeighbor(self, node):
         return self.getNthNodeAtLevel(self.level(node), self.graph['levelIndex'][node]-1)
@@ -188,6 +181,19 @@ class Walker(object):
             else:
                 self.prelim[node] = midpoint
 
+    def secondWalk(self, node, lvl, modsum):
+        if (lvl <= self.MaxDepth):
+            xTemp = self.xTopAdjustment + self.prelim[node] + modsum
+            yTemp = self.yTopAdjustment + lvl * self.LevelSeparation
+            self.coords[n] = tlp.Coord(xTemp, yTemp, 0)
+            if (self.hasChild(node)):
+                result = self.secondWalk(self.firstChild(node), lvl+1, modsum+self.modifier[node])
+                if ((result == True) and (self.hasRightSibling(node))):
+                    result = self.secondWalk(self.rightSibling(node), lvl+1, modsum)
+        else:
+            result = False
+        return result
+
     def getLeftMost(self, node, level, depth):
         if (level >= depth):
             return node
@@ -200,7 +206,7 @@ class Walker(object):
                 rightmost = rightSibling(rightmost)
                 leftmost = self.getLeftMost(rightmost, level+1, depth)
             return leftmost
-            
+
     def apportion(self, node, lvl):
         leftmost = self.firstChild(node)
         neighbor = self.leftNeighbor(leftmost)

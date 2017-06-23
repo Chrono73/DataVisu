@@ -23,13 +23,14 @@ class Walker(object):
         self.coords = self.graph.getLayoutProperty('viewLayout')
 
         self.levelZeroPtr = list()
-        self.xTopAdjustment = 0
-        self.yTopAdjustment = 0
+        self.xTopAdjustment = 10
+        self.yTopAdjustment = 10
 
-        self.LevelSeparation = 2
+        self.LevelSeparation = 50
         self.MaxDepth = self.graph['viewMetric'].getNodeMax()
-        self.SiblingSeparation = 1
-        self.SubtreeSeparation = 5
+        print self.MaxDepth
+        self.SiblingSeparation = 40
+        self.SubtreeSeparation = 70
 
         # Assigne a chaque node l'index de sa position sur sa ligne.
     def initNodeLevelIds(self):
@@ -71,31 +72,34 @@ class Walker(object):
         try:
             self.graph.getOutNodes(node).next()
             return True
-        except StopIteration:
+        except:
             return False
 
         # Renvoie le premier enfant de la node
     def firstChild(self, node):
         try:
             return self.graph.getOutNodes(node).next()
-        except StopIteration:
+        except:
             return None
 
         # Verifie si la node possede un voisin de gauche
     def hasLeftSibling(self, node):
         parent = self.parent(node)
-        siblingList = self.graph.getOutNodes(parent)
-        try:
-            current = siblingList.next()
+        if not (parent == None):
+            siblingList = self.graph.getOutNodes(parent)
             try:
-                while (true):
-                    sibling = current
-                    current = siblingList.next()
-                    if (node == current):
-                        return True
-            except StopIteration:
+                current = siblingList.next()
+                try:
+                    while (True):
+                        sibling = current
+                        current = siblingList.next()
+                        if (node == current):
+                            return True
+                except:
+                    return False
+            except:
                 return False
-        except StopIteration:
+        else:
             return False
 
         # Renvoie le voisin de gauche de la node
@@ -105,30 +109,33 @@ class Walker(object):
         try:
             current = siblingList.next()
             try:
-                while (true):
+                while (True):
                     sibling = current
                     current = siblingList.next()
                     if (node == current):
                         return sibling
-            except StopIteration:
+            except:
                 return None
-        except StopIteration:
+        except:
             return None
 
         # Verifie si la node possede un voisin de droite
     def hasRightSibling(self, node):
         parent = self.parent(node)
-        siblingList = self.graph.getOutNodes(parent)
-        try:
-            while (true):
-                current = siblingList.next()
-                if (node == current):
-                    try:
-                        current = siblingList.next()
-                        return True
-                    except StopIteration:
-                        return False
-        except StopIteration:
+        if not (parent == None):
+            siblingList = self.graph.getOutNodes(parent)
+            try:
+                while (True):
+                    current = siblingList.next()
+                    if (node == current):
+                        try:
+                            current = siblingList.next()
+                            return True
+                        except:
+                            return False
+            except:
+                return False
+        else:
             return False
 
         # Renvoie le voisin de droite de la node
@@ -136,11 +143,11 @@ class Walker(object):
         parent = self.parent(node)
         siblingList = self.graph.getOutNodes(parent)
         try:
-            while (true):
+            while (True):
                 current = siblingList.next()
                 if (node == current):
                     return siblingList.next()
-        except StopIteration:
+        except:
             return None
 
         # Renvoie la node devant etre disposee a gauche de la node en parametre
@@ -148,7 +155,7 @@ class Walker(object):
         return self.getNthNodeAtLevel(self.level(node), self.graph['levelIndex'][node]-1)
 
     def initPrevNodeList(self):
-        for i in range(0, self.graph['viewMetric'][root]):
+        for i in range(0, int(self.graph['viewMetric'][self.root])+1):
             self.levelZeroPtr.append(None)
         '''
             GetPrevNodeAtLevel and SetPrevNodeAtLevel are just the regular getter and setter
@@ -159,7 +166,7 @@ class Walker(object):
     def firstWalk(self, node, lvl):
         self.levelZeroPtr[lvl] = node
         self.modifier[node] = 0
-        if ((not self.hasChild(node)) or (lvl == MaxDepth)):
+        if ((not self.hasChild(node)) or (lvl == self.MaxDepth)):
             if (self.hasLeftSibling(node)):
                 self.prelim[node] = self.prelim[self.leftSibling(node)]
                 self.prelim[node] += self.SiblingSeparation + 1.0
@@ -170,7 +177,7 @@ class Walker(object):
             rightmost = self.firstChild(node)
             self.firstWalk(leftmost, lvl+1)
             while (self.hasRightSibling(rightmost)):
-                rightmost = rightSibling(rightmost)
+                rightmost = self.rightSibling(rightmost)
                 self.firstWalk(rightmost, lvl+1)
             midpoint = (self.prelim[leftmost] + self.prelim[rightmost])/2.0
             if (self.hasLeftSibling(node)):
@@ -182,16 +189,23 @@ class Walker(object):
                 self.prelim[node] = midpoint
 
     def secondWalk(self, node, lvl, modsum):
+        result = True
+        print node
+
         if (lvl <= self.MaxDepth):
+            print lvl
             xTemp = self.xTopAdjustment + self.prelim[node] + modsum
-            yTemp = self.yTopAdjustment + lvl * self.LevelSeparation
-            self.coords[n] = tlp.Coord(xTemp, yTemp, 0)
+            yTemp = self.level(node) * self.LevelSeparation
+            self.coords[node] = tlp.Coord(xTemp, -yTemp, 0)
             if (self.hasChild(node)):
                 result = self.secondWalk(self.firstChild(node), lvl+1, modsum+self.modifier[node])
-                if ((result == True) and (self.hasRightSibling(node))):
-                    result = self.secondWalk(self.rightSibling(node), lvl+1, modsum)
+            if (self.hasRightSibling(node)):
+                result = self.secondWalk(self.rightSibling(node), lvl, modsum)
         else:
-            result = False
+            print 'Level over MaxDepth'
+            print self.MaxDepth
+            print self.level(node)
+            print lvl
         return result
 
     def getLeftMost(self, node, level, depth):
@@ -211,9 +225,9 @@ class Walker(object):
         leftmost = self.firstChild(node)
         neighbor = self.leftNeighbor(leftmost)
         compareDepth = 1
-        depthToStop = MaxDepth - lvl
+        depthToStop = self.MaxDepth - self.level(node)
 
-        while (not (leftmost == None) and not (neighbor == None) and (compareDepth >= depthToStop)):
+        while (not (leftmost == None) and not (neighbor == None) and (compareDepth <= depthToStop)):
             leftModSum = 0
             rightModSum = 0
             ancestorLeftmost = leftmost
@@ -221,21 +235,26 @@ class Walker(object):
             for i in range(0, compareDepth+1):
                 ancestorLeftmost = self.parent(ancestorLeftmost)
                 ancestorNeighbor = self.parent(ancestorNeighbor)
-                rightModSum += self.modifier(ancestorLeftmost)
-                leftModSum += self.modifier(ancestorNeighbor)
-            moveDistance = self.prelim[neighbor] + leftModSum + SubtreeSeparation + 1
+                rightModSum += self.modifier[ancestorLeftmost]
+                leftModSum += self.modifier[ancestorNeighbor]
+            moveDistance = self.prelim[neighbor] + leftModSum + self.SubtreeSeparation
             moveDistance -= (self.prelim[leftmost] + rightModSum)
 
             if (moveDistance > 0):
                 tempPtr = node
                 leftSiblings = 0
+                print ancestorNeighbor
                 while (not (tempPtr == None) and not (tempPtr == ancestorNeighbor)):
+                    print 'ping'
+                    print tempPtr
                     leftSiblings += 1
                     tempPtr = self.leftSibling(tempPtr)
                 if not (tempPtr == None):
+                    print 'test1'
                     portion = moveDistance / leftSiblings
                     tempPtr = node
                     while (tempPtr == ancestorNeighbor):
+                        print 'test2'
                         self.prelim[tempPtr] += moveDistance
                         self.modifier[tempPtr] += moveDistance
                         moveDistance -= portion
@@ -253,17 +272,20 @@ class Walker(object):
         if (node == None):
             return True
         else:
-            '''
-            initPrevNodeList()
-            firstWalk(node, 0)
+            self.initNodeLevelIds()
+            self.initPrevNodeList()
+            self.firstWalk(node, 0)
 
-            xTopAdjustment = xCoord(node) - prelim[node]
-            yTopAdjustment = yCoord(node)
+            self.xTopAdjustment = self.coords[node].getX() - self.prelim[node]
+            self.yTopAdjustment = self.coords[node].getY()
 
-            return secondWalk(node, 0, 0)
-            '''
+            result =  self.secondWalk(node, 0, 0)
+            print result
+            return result
 
 def main(graph):
     print 'Compilation successful.'
+    params = tlp.getDefaultPluginParameters("Depth", graph)
+    graph.applyDoubleAlgorithm('Depth', params)
     walk = Walker(graph)
-    walk.initNodeLevelIds()
+    walk.positionTree(walk.root)
